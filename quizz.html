@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz App</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #f0f8ff;
+            text-align: center;
+        }
+
+        .container {
+            width: 60%;
+            margin: auto;
+            margin-top: 50px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px gray;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        .question {
+            font-size: 20px;
+            margin: 20px 0;
+        }
+
+        .options label {
+            display: block;
+            margin: 10px;
+            font-size: 18px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: green;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        #result {
+            font-size: 22px;
+            margin-top: 20px;
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>🧠 Quiz App</h2>
+
+    <div id="quiz">
+        <div class="question" id="question"></div>
+        <div class="options" id="options"></div>
+        <button onclick="nextQuestion()">Next</button>
+    </div>
+
+    <div id="result"></div>
+</div>
+
+<script>
+    const quizData = [
+        {
+            question: "What is the capital of India?",
+            options: ["Mumbai", "Delhi", "Kolkata", "Chennai"],
+            answer: "Delhi"
+        },
+        {
+            question: "Which language is used for web development?",
+            options: ["Python", "C++", "JavaScript", "Java"],
+            answer: "JavaScript"
+        },
+        {
+            question: "2 + 2 = ?",
+            options: ["3", "4", "5", "6"],
+            answer: "4"
+        }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    function loadQuestion() {
+        let q = quizData[currentQuestion];
+        document.getElementById("question").innerText = q.question;
+
+        let optionsHTML = "";
+        q.options.forEach(option => {
+            optionsHTML += `
+                <label>
+                    <input type="radio" name="option" value="${option}">
+                    ${option}
+                </label>
+            `;
+        });
+
+        document.getElementById("options").innerHTML = optionsHTML;
+    }
+
+    function nextQuestion() {
+        let selected = document.querySelector('input[name="option"]:checked');
+
+        if (!selected) {
+            alert("Please select an answer!");
+            return;
+        }
+
+        if (selected.value === quizData[currentQuestion].answer) {
+            score++;
+        }
+
+        currentQuestion++;
+
+        if (currentQuestion < quizData.length) {
+            loadQuestion();
+        } else {
+            document.getElementById("quiz").style.display = "none";
+            document.getElementById("result").innerText = 
+                "Your Score: " + score + "/" + quizData.length;
+        }
+    }
+
+    loadQuestion();
+</script>
+
+</body>
+</html>
